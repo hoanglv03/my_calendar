@@ -2,6 +2,8 @@ import 'package:easy_date_timeline/easy_date_timeline.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_calendar/controller/datetime_controller.dart';
+import 'package:my_calendar/models/assignment.dart';
+import 'package:my_calendar/models/task.dart';
 import 'package:my_calendar/widgets/item_list_task.dart';
 
 class Today extends ConsumerStatefulWidget {
@@ -20,6 +22,17 @@ class _TodayState extends ConsumerState<Today> {
     final Color inactiveTextColor =
         Theme.of(context).colorScheme.secondaryContainer;
     final Color activeLabelColor = Theme.of(context).colorScheme.onBackground;
+
+    //create data test
+    Assignment assignment1 =
+        Assignment("Assignment", false, 1, null, "Assignment Des", "11:30 AM");
+    Assignment assignment2 =
+        Assignment("Assignment2", false, 1, null, "Assignment Des", "11:30 AM");
+    List<Task> listTask = [];
+    listTask.add(Task(1, "EC 203 - Principles Macroeconomics", "10:30 AM",
+        "11:30 AM", "Room 101", 0xFFFE7171, [assignment1, assignment2]));
+    listTask.add(Task(2, "MGT 101 - Organization Management", "10:30 AM",
+        "11:30 AM", "Room 102", 0xFFFEDDDD, null));
 
     return Container(
       alignment: Alignment.topCenter,
@@ -126,13 +139,12 @@ class _TodayState extends ConsumerState<Today> {
           ),
           Expanded(
             flex: 5,
-            child: ListView(
+            child: ListView.builder(
+              itemCount: listTask.length,
               padding: const EdgeInsets.all(20),
-              children: const <Widget>[
-                ItemListTask(),
-                ItemListTask(),
-                ItemListTask(),
-              ],
+              itemBuilder: (BuildContext context, int index) {
+                return ItemListTask(task: listTask[index]);
+              },
             ),
           )
         ],
