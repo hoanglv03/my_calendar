@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:my_calendar/models/assignment.dart';
 import 'package:my_calendar/screens/assignments.dart';
+import 'package:my_calendar/widgets/button_outline.dart';
 import 'package:my_calendar/widgets/item_list_assignment.dart';
 
 class ListAssignment extends ConsumerStatefulWidget {
@@ -26,46 +27,48 @@ class _ListAssignmentState extends ConsumerState<ListAssignment> {
 
     return Column(
       children: [
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox(
-              child: Text(
-                textLocalAssignment,
-                style: GoogleFonts.inter(
-                  textStyle:
-                      TextStyle(color: colorWhite, fontWeight: FontWeight.w600),
+        SizedBox(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(
+                child: Text(
+                  textLocalAssignment,
+                  style: GoogleFonts.inter(
+                    textStyle: TextStyle(
+                        color: colorWhite, fontWeight: FontWeight.w600),
+                  ),
                 ),
               ),
-            ),
-            Container(
-              width: 16,
-              height: 16,
-              margin: const EdgeInsets.only(left: 5),
-              decoration: BoxDecoration(
-                color: colorError,
-                borderRadius: const BorderRadius.all(Radius.circular(15.0)),
-              ),
-              child: Text(
-                textLocalAssignmentMissCount,
-                textAlign: TextAlign.center,
-                style: GoogleFonts.inter(
-                  textStyle: TextStyle(color: colorPrimary, fontSize: 12),
+              Container(
+                width: 16,
+                height: 16,
+                margin: const EdgeInsets.only(left: 5),
+                decoration: BoxDecoration(
+                  color: colorError,
+                  borderRadius: const BorderRadius.all(Radius.circular(15.0)),
+                ),
+                child: Text(
+                  textLocalAssignmentMissCount,
+                  textAlign: TextAlign.center,
+                  style: GoogleFonts.inter(
+                    textStyle: TextStyle(color: colorPrimary, fontSize: 12),
+                  ),
                 ),
               ),
-            ),
-            // Expanded(
-            //   child: ListView.builder(
-            //     itemCount: listAssignments?.length,
-            //     padding: const EdgeInsets.all(20),
-            //     itemBuilder: (BuildContext context, int index) {
-            //       return ItemListAssignment(
-            //           assignment: listAssignments![index]);
-            //     },
-            //   ),
-            // ),
-          ],
-        )
+            ],
+          ),
+        ),
+        SizedBox(
+          child: ListView.builder(
+            shrinkWrap: true,
+            primary: false,
+            itemCount: listAssignments?.length,
+            itemBuilder: (BuildContext context, int index) {
+              return ItemListAssignment(assignment: listAssignments![index]);
+            },
+          ),
+        ),
       ],
     );
   }

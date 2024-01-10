@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:my_calendar/models/task.dart';
+import 'package:my_calendar/widgets/button_fill.dart';
+import 'package:my_calendar/widgets/button_outline.dart';
 import 'package:my_calendar/widgets/list_assignment.dart';
 
 class ItemListTask extends ConsumerStatefulWidget {
@@ -17,7 +19,7 @@ class _ItemListTaskState extends ConsumerState<ItemListTask> {
   bool _isExpanded = false;
   bool _isDone1 = false;
   static const double _initHeight = 88;
-  static const double _expandedHeight = 150;
+  static const double _expandedHeight = 400;
   final ExpansionTileController controller = ExpansionTileController();
   void _toggleExpanded() {
     setState(() {
@@ -29,9 +31,13 @@ class _ItemListTaskState extends ConsumerState<ItemListTask> {
   @override
   Widget build(BuildContext context) {
     final Color colorItem = Theme.of(context).colorScheme.onPrimary;
+
     final Color colorClass = Theme.of(context).colorScheme.surface;
+
     final Color colorError = Theme.of(context).colorScheme.error;
+
     final task = widget.task;
+
     Color colorTask = Color(task.color);
 
     return GestureDetector(
@@ -47,65 +53,51 @@ class _ItemListTaskState extends ConsumerState<ItemListTask> {
           borderRadius: BorderRadius.circular(5), // Set the borderRadius
         ),
         onEnd: () {
+          print("onEnd");
           setState(() {
             _isDone1 = true;
           });
         },
         child: Row(
           children: [
-            Expanded(
-              flex: 1,
-              child: SizedBox(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: Container(
-                        alignment: Alignment.topCenter,
-                        margin: const EdgeInsets.only(top: 10),
-                        child: Row(
-                          children: [
-                            const Expanded(
-                              child: Icon(
-                                Icons.arrow_forward_ios_rounded,
-                                color: Colors.white,
-                                size: 14,
-                              ),
-                            ),
-                            Expanded(
-                              flex: 3,
-                              child: Text(
-                                task.startTime,
-                                style: const TextStyle(
-                                  fontSize: 13,
-                                  color: Colors.white,
-                                ),
-                                textAlign: TextAlign.end,
-                              ),
-                            ),
-                          ],
-                        ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              mainAxisSize: MainAxisSize.max,
+              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  alignment: Alignment.topCenter,
+                  margin: const EdgeInsets.only(top: 10),
+                  child: Row(
+                    children: [
+                      const Icon(
+                        Icons.arrow_forward_ios_rounded,
+                        color: Colors.white,
+                        size: 14,
                       ),
-                    ),
-                    Expanded(
-                      child: Container(
-                        alignment: Alignment.bottomRight,
-                        margin: const EdgeInsets.only(bottom: 10),
-                        child: Text(
-                          task.endTime,
-                          textAlign: TextAlign.end,
-                          style: const TextStyle(
-                              fontSize: 13, color: Colors.white),
+                      Text(
+                        task.startTime,
+                        style: const TextStyle(
+                          fontSize: 13,
+                          color: Colors.white,
                         ),
+                        textAlign: TextAlign.end,
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
+                Container(
+                  alignment: Alignment.bottomRight,
+                  margin: const EdgeInsets.only(bottom: 10),
+                  child: Text(
+                    task.endTime,
+                    textAlign: TextAlign.end,
+                    style: const TextStyle(fontSize: 13, color: Colors.white),
+                  ),
+                ),
+              ],
             ),
             Expanded(
-              flex: 3,
               child: Container(
                 padding: const EdgeInsets.only(left: 10),
                 margin: const EdgeInsets.all(8),
@@ -208,18 +200,46 @@ class _ItemListTaskState extends ConsumerState<ItemListTask> {
                         ],
                       ),
                     ),
-                    ExpansionTile(
-                      controller: controller,
-                      title:
-                          const Text('ExpansionTile with explicit controller.'),
-                      children: <Widget>[
-                        Container(
-                          alignment: Alignment.center,
-                          padding: const EdgeInsets.all(24),
-                          child: const Text('ExpansionTile Contents'),
-                        ),
-                      ],
-                    ),
+                    !(_isExpanded)
+                        ? const SizedBox()
+                        : Column(
+                            children: [
+                              Container(
+                                margin:
+                                    const EdgeInsets.symmetric(vertical: 20),
+                                child: ListAssignment(
+                                  listAssignments: task.listAssignments,
+                                ),
+                              ),
+                              SizedBox(
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Flexible(
+                                      flex: 3000,
+                                      child: ButtonOutLine(
+                                        onPress: () {
+                                          print("Click");
+                                        },
+                                        textButton: "Cancel",
+                                      ),
+                                    ),
+                                    Flexible(
+                                      flex: 5000,
+                                      child: Container(
+                                        margin: const EdgeInsets.only(left: 10),
+                                        child: ButtonFill(
+                                            onPress: () {
+                                              print("object");
+                                            },
+                                            textButton: "+ Assignment"),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
                   ],
                 ),
               ),

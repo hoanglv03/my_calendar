@@ -7,7 +7,8 @@ class Task {
   String endTime;
   String idClassName;
   int color;
+  bool isExpanded;
   List<Assignment>? listAssignments;
   Task(this.id, this.title, this.startTime, this.endTime, this.idClassName,
-      this.color, this.listAssignments);
+      this.color, this.listAssignments, this.isExpanded);
 }
